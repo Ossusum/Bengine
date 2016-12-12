@@ -64,7 +64,6 @@ public class Crawler {
     private void crawlDataBase(String url){
         try{
             String dbPath = "jdbc:mysql://localhost:3306/bengine?autoReconnect=true&useSSL=false";
-            String pass = "bekind123";
             connection = DriverManager.getConnection(dbPath,"root", "");
             System.out.println("Crawling Url: " + url);
 
