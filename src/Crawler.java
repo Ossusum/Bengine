@@ -1,7 +1,5 @@
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedWriter;
@@ -65,19 +63,19 @@ public class Crawler {
 
     private void crawlDataBase(String url){
         try{
-            String dbPath = "jdbc:mysql://fdb12.biz.nf:3306/2242121_bookzone";
+            String dbPath = "jdbc:mysql://localhost:3306/bengine?autoReconnect=true&useSSL=false";
             String pass = "bekind123";
-            connection = DriverManager.getConnection(dbPath,"2242121_bookzone", pass);
+            connection = DriverManager.getConnection(dbPath,"root", "");
             System.out.println("Crawling Url: " + url);
 
-            String sql = "select * from Record where URL = '"+url+"'";
-            //runSql2("TRUNCATE Record;");
+            String sql = "select * from crawler where URL = '"+url+"'";
+            //runSql2("TRUNCATE crawler;");
             ResultSet rs = runSql(sql);
             if(rs.next()){
 
             }else{
                 //store the URL to database to avoid parsing again
-                sql = "INSERT INTO `search_engine` (`URL`) VALUES (?);";
+                sql = "INSERT INTO `crawler` (`URL`) VALUES (?);";
                 PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 stmt.setString(1, url);
                 stmt.execute();
@@ -109,14 +107,11 @@ public class Crawler {
     }
 
 
-    private void checkDatabase(String url) {
-    }
-
     private boolean checkURL(String url){
 
             if (!urlsTransversed.contains(url))
                 if (url.contains("http") || url.contains("https"))
-                    if (!url.contains(".pdf") && !url.contains("?") )
+                    if (!url.contains(".pdf") && !url.contains("?") && !url.contains("event-calendar") )
                         return true;
 
 
