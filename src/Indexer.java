@@ -41,20 +41,22 @@ public class Indexer {
                 doc = null;
             }
             if (doc != null) {
-                String[] documentWords = doc.text().split(" ");
+                String[] documentWords = simpleText(doc.text()).split(" ");
                 for (int j = 0; j < documentWords.length; ++j) {
                     if (!hashmap.containsKey(documentWords[j])) {
                         hashmap.put(documentWords[j], new ArrayList<String>());
                     }
                     ArrayList<String> urls = hashmap.get(documentWords[j]);
                     urls.add(keywordUrls.get(i));
-
-
                 }
             }
         }
     }
 
+    private String simpleText(String start){
+        String newString = start.replaceAll("[^a-zA-Z ]", " ").toLowerCase();
+        return newString;
+    }
 
     private void readUrls() {
         File readFile = new File("CrawlerURLS.txt");
@@ -92,5 +94,15 @@ public class Indexer {
         return keywordUrls;
     }
 
+    public void setKeywordUrls(ArrayList<String> keywordUrls) {
+        this.keywordUrls = keywordUrls;
+    }
 
+    public HashMap<String, ArrayList<String>> getHashmap() {
+        return hashmap;
+    }
+
+    public void setHashmap(HashMap<String, ArrayList<String>> hashmap) {
+        this.hashmap = hashmap;
+    }
 }
